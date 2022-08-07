@@ -24,11 +24,7 @@ class Comments(models.Model):
 class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="liked_on", default="1")
     user_like = models.ForeignKey(User, on_delete=models.CASCADE,related_name="user_like", default="1")
-    
-class Profile(models.Model):
-    following = models.ForeignKey(User, on_delete=models.CASCADE,related_name="user_following", default="0")
-    followers = models.ForeignKey(User, on_delete=models.CASCADE,related_name="user_followers", default="0")
-    user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profile")
+
 
 
 

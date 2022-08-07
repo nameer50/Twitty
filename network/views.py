@@ -6,7 +6,7 @@ from django.urls import reverse
 import json
 from django.http import JsonResponse
 
-from .models import User,Post,Like,Comments,Profile
+from .models import User,Post,Like,Comments
 
 
 def index(request):
@@ -70,11 +70,6 @@ def register(request):
 
 def profile(request):
     if request.method == "GET":
-        user = request.user
-        try:
-            profile = Profile.objects.get(user_profile=user)
-        except Profile.DoesNotExist:
-            return JsonResponse({"error":"Profile does not exist"}, status=404)
-        return JsonResponse(profile.serialize()) 
+        return JsonResponse({"clicked":f"{request.user}"}) 
 
      
