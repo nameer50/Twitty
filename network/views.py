@@ -3,8 +3,10 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+import json
+from django.http import JsonResponse
 
-from .models import User
+from .models import User,Post,Like,Comments,Profile
 
 
 def index(request):
@@ -53,11 +55,26 @@ def register(request):
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
+            # Create a default profile when user signs up
+         
         except IntegrityError:
             return render(request, "network/register.html", {
                 "message": "Username already taken."
             })
         login(request, user)
+        
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+def profile(request):
+    if request.method == "GET":
+        user = request.user
+        try:
+            profile = Profile.objects.get(user_profile=user)
+        except Profile.DoesNotExist:
+            return JsonResponse({"error":"Profile does not exist"}, status=404)
+        return JsonResponse(profile.serialize()) 
+
+     
