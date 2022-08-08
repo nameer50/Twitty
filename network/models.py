@@ -26,6 +26,8 @@ class Like(models.Model):
     user_like = models.ForeignKey(User, on_delete=models.CASCADE,related_name="user_like", default="1")
 
 
+class Profile(models.Model):
+    following = models.ManyToManyField(User, null=True)
 
 
     

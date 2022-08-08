@@ -1,5 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#profile').addEventListener('click', clickedprofile);
+    document.querySelector('#post-form').onsubmit = make_post;
+
+    //clear post fields
+    document.querySelector('#post-text').value = '';
+
 
     
   });
@@ -12,4 +17,22 @@ function clickedprofile(){
         console.log(profile);
     });
     
+}
+
+function make_post(event){
+    event.preventDefault();
+    fetch('/post', {
+        method:'POST',
+        body: JSON.stringify({
+            user_post: `${document.querySelector('[name="make-post"]').id}`,
+            post: `${document.querySelector('#post-text').value}`
+            
+        }),  
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+    })
+    document.querySelector('#post-text').value = '';
+
 }

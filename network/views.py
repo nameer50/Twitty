@@ -5,8 +5,9 @@ from django.shortcuts import render
 from django.urls import reverse
 import json
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
-from .models import User,Post,Like,Comments
+from .models import User,Post,Like,Comments,Profile
 
 
 def index(request):
@@ -56,6 +57,8 @@ def register(request):
             user = User.objects.create_user(username, email, password)
             user.save()
             # Create a default profile when user signs up
+            profile = Profile(pk=user.id)
+            profile.save()
          
         except IntegrityError:
             return render(request, "network/register.html", {
@@ -71,5 +74,12 @@ def register(request):
 def profile(request):
     if request.method == "GET":
         return JsonResponse({"clicked":f"{request.user}"}) 
+
+@csrf_exempt
+def makepost(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        return JsonResponse({"data": f"{data}"})
+        
 
      

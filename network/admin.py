@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User,Comments,Like,Post
+from .models import User,Comments,Like,Post,Profile
 
 # Register your models here.
 class UserAdmin(admin.ModelAdmin):
@@ -15,9 +15,12 @@ class LikeAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     list_display = ("id", "user_post", "post", "timestamp")
 
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ("id",)
+
 
 admin.site.register(User, UserAdmin)
-
+admin.site.register(Profile,ProfileAdmin)
 admin.site.register(Like,LikeAdmin)
 admin.site.register(Comments,CommentAdmin)
 admin.site.register(Post, PostAdmin)
