@@ -10,7 +10,7 @@ class User(AbstractUser):
 
 class Post(models.Model):
     user_post = models.ForeignKey(User, on_delete=models.CASCADE,related_name="user_post", default="1")
-    post = models.CharField(max_length=2000, null="False")
+    post = models.CharField(max_length=2000, null=False, blank=False, default="")
     timestamp = models.DateTimeField(auto_now_add=True)
 
 

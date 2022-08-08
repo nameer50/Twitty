@@ -3,14 +3,18 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#post-form').onsubmit = make_post;
 
     //clear post fields
-    document.querySelector('#post-text').value = '';
+   
 
 
     
   });
 
+function load_index(){
+    fetch('')
+}
 
 function clickedprofile(){
+    history.pushState('profile', "", "profile");
     fetch('/profile')
     .then(response => response.json())
     .then(profile => {
@@ -18,6 +22,7 @@ function clickedprofile(){
     });
     
 }
+
 
 function make_post(event){
     event.preventDefault();
@@ -34,5 +39,6 @@ function make_post(event){
         console.log(result);
     })
     document.querySelector('#post-text').value = '';
+    load_index();
 
 }

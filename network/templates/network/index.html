@@ -6,7 +6,7 @@
 <form class="input-group mb-3" id="post-form">
     {% csrf_token %}
     <button type="submit" class="btn btn-outline-secondary" type="button" id="{{request.user.id}}" name="make-post">Share</button>
-    <input type="text" class="form-control" placeholder="Whats on your mind?" id="post-text">
+    <input required type="text" class="form-control" placeholder="Whats on your mind?" id="post-text">
   </form>
 {% endblock %}
 

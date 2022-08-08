@@ -79,7 +79,17 @@ def profile(request):
 def makepost(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        return JsonResponse({"data": f"{data}"})
+        try:
+            user = data["user_post"];
+            user = User.objects.get(pk=user);
+            post = data["post"];
+            if len(post) == 0:
+                raise Exception
+            p = Post(user_post=user, post=post);
+            p.save()
+            return JsonResponse({"success":"post created"})
+        except:
+            return JsonResponse({"error":"something went wrong"})
         
 
      
