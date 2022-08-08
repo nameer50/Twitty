@@ -80,16 +80,23 @@ def makepost(request):
     if request.method == "POST":
         data = json.loads(request.body)
         try:
-            user = data["user_post"];
-            user = User.objects.get(pk=user);
-            post = data["post"];
+            user = data["user_post"]
+            user = User.objects.get(pk=user)
+            post = data["post"]
             if len(post) == 0:
                 raise Exception
-            p = Post(user_post=user, post=post);
+            p = Post(user_post=user, post=post)
             p.save()
             return JsonResponse({"success":"post created"})
         except:
             return JsonResponse({"error":"something went wrong"})
         
+def getposts(request):
+    if request.method == "GET":
+        posts = Post.objects.all()
+        posts = posts.order_by("-timestamp").all()
+        return JsonResponse([post.serialize() for post in posts], safe=False)
+
+
 
      

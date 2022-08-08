@@ -13,6 +13,14 @@ class Post(models.Model):
     post = models.CharField(max_length=2000, null=False, blank=False, default="")
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    def serialize(self):
+        return {
+            "id":self.id,
+            "user_post":self.user_post.username,
+            "post": self.post,
+            "time":self.timestamp.strftime("%b %d %Y, %I:%M %p")
+        }
+
 
 
 class Comments(models.Model):

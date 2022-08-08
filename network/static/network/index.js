@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#profile').addEventListener('click', clickedprofile);
     document.querySelector('#post-form').onsubmit = make_post;
+    document.querySelector('#all-posts-link').addEventListener('click', get_posts);
 
     //clear post fields
+    document.querySelector('#all-posts').style.display = 'none';
    
 
 
@@ -14,7 +16,7 @@ function load_index(){
 }
 
 function clickedprofile(){
-    history.pushState('profile', "", "profile");
+    //history.pushState('profile', "", "profile");
     fetch('/profile')
     .then(response => response.json())
     .then(profile => {
@@ -41,4 +43,37 @@ function make_post(event){
     document.querySelector('#post-text').value = '';
     load_index();
 
+}
+
+
+function get_posts(){
+    document.querySelector('#all-posts').innerHTML = '';
+    document.querySelector('#all-posts').style.display = 'block';
+    fetch('/Allposts')
+    .then(response => response.json())
+    .then(posts => {
+        console.log(posts);
+        posts.forEach(post => {
+            const element = document.createElement('div');
+            const card_header = document.createElement('div');
+            const card_body = document.createElement('div');
+
+            card_body.classList.add('card-body');
+            card_header.classList.add('card-header');
+
+            card_body.innerHTML = `<h5>${post.post}</h5>`;
+            card_header.innerHTML = `${post.user_post}`;
+
+            card_body.innerHTML += `<button>Like</button>`;
+            card_body.innerHTML += `<button>Comment</button>`;
+
+            element.classList.add('card');
+            element.append(card_header);
+            element.append(card_body);
+            
+            document.querySelector('#all-posts').append(element);
+
+
+        })
+    });
 }
