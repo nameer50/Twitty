@@ -14,11 +14,13 @@ class Post(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def serialize(self):
+        likes = len(self.liked_on.all())
         return {
             "id":self.id,
             "user_post":self.user_post.username,
             "post": self.post,
-            "time":self.timestamp.strftime("%b %d %Y, %I:%M %p")
+            "time":self.timestamp.strftime("%b %d %Y, %I:%M %p"),
+            "likes":likes
         }
 
 

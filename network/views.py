@@ -90,12 +90,28 @@ def makepost(request):
             return JsonResponse({"success":"post created"})
         except:
             return JsonResponse({"error":"something went wrong"})
-        
+
+
+@csrf_exempt        
 def getposts(request):
     if request.method == "GET":
         posts = Post.objects.all()
         posts = posts.order_by("-timestamp").all()
         return JsonResponse([post.serialize() for post in posts], safe=False)
+
+    elif request.method == "PUT":
+        try:
+            data = json.loads(request.body)
+            post = data["post"]
+            post = Post.objects.get(pk=post)
+            user = User.objects.get(pk=request.user.id)
+            l = Like(post=post, user_like=user)
+            l.save()
+            return JsonResponse({'sucess':'liked'})
+        except KeyError:
+            return JsonResponse({'keyerror':'no liked'})
+        
+
 
 
 

@@ -6,13 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
     //clear post fields
     document.querySelector('#all-posts').style.display = 'none';
    
-
-
-    
   });
 
 function load_index(){
-    fetch('')
+    
+    fetch('');
 }
 
 function clickedprofile(){
@@ -46,7 +44,8 @@ function make_post(event){
 }
 
 
-function get_posts(){
+function get_posts(event){
+    event.preventDefault();
     document.querySelector('#all-posts').innerHTML = '';
     document.querySelector('#all-posts').style.display = 'block';
     fetch('/Allposts')
@@ -63,17 +62,37 @@ function get_posts(){
 
             card_body.innerHTML = `<h5>${post.post}</h5>`;
             card_header.innerHTML = `${post.user_post}`;
+            card_header.innerHTML += ' ' + ' ' + `${post.time}`
 
-            card_body.innerHTML += `<button>Like</button>`;
-            card_body.innerHTML += `<button>Comment</button>`;
+
+            card_body.innerHTML += `<button id="like" data-post="${post.id}">Like</button>`;
+            card_body.innerHTML += `<button id="comment">Comment</button>`;
 
             element.classList.add('card');
             element.append(card_header);
             element.append(card_body);
             
             document.querySelector('#all-posts').append(element);
-
-
-        })
+            
+            document.querySelectorAll('#like').forEach(() => {
+                addEventListener('click', liked_post);
+            });
+        });
     });
+}
+
+function liked_post(event){
+    fetch('/Allposts', {
+        method: 'PUT',
+        body: JSON.stringify({
+            post : event.target.dataset.post
+        }),
+
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+    })
+    
+    
 }

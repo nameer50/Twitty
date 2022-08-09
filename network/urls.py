@@ -14,4 +14,5 @@ urlpatterns = [
     path("profile", views.profile, name="profile"),
     path("post", views.makepost, name="post"),
     path("Allposts", views.getposts, name="Allposts")
+
 ]
