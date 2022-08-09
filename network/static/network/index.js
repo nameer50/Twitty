@@ -69,6 +69,11 @@ function get_posts(event){
             card_header.innerHTML += ' ' + ' ' + `${post.time}`
 
           
+            fetch(`/liked/${post.id}`)
+            .then(response => response.json())
+            .then(post => {
+                console.log(post);
+            })
 
             card_body.innerHTML += `<button id="like" data-post="${post.id}">Like</button>`;
             card_body.innerHTML += `<button id="comment">Comment</button>`;
