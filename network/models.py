@@ -35,6 +35,17 @@ class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="liked_on", default="1")
     user_like = models.ForeignKey(User, on_delete=models.CASCADE,related_name="user_like", default="1")
 
+    def serialize(self):
+        return {
+            "id":self.id,
+            "user_like":self.user_like.username,
+            "post": self.post.id
+            
+        }
+
+
+
+
 
 class Profile(models.Model):
     following = models.ManyToManyField(User, null=True)

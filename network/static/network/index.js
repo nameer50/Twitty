@@ -48,6 +48,10 @@ function get_posts(event){
     event.preventDefault();
     document.querySelector('#all-posts').innerHTML = '';
     document.querySelector('#all-posts').style.display = 'block';
+
+ 
+
+
     fetch('/Allposts')
     .then(response => response.json())
     .then(posts => {
@@ -64,6 +68,7 @@ function get_posts(event){
             card_header.innerHTML = `${post.user_post}`;
             card_header.innerHTML += ' ' + ' ' + `${post.time}`
 
+          
 
             card_body.innerHTML += `<button id="like" data-post="${post.id}">Like</button>`;
             card_body.innerHTML += `<button id="comment">Comment</button>`;
@@ -74,7 +79,7 @@ function get_posts(event){
             
             document.querySelector('#all-posts').append(element);
             
-            document.querySelectorAll('#like').forEach(() => {
+            document.querySelectorAll('#like').forEach( () => {
                 addEventListener('click', liked_post);
             });
         });
@@ -92,7 +97,12 @@ function liked_post(event){
     .then(response => response.json())
     .then(result => {
         console.log(result);
+        if (result['sucess'] == 'liked'){
+            event.target.innerHTML = 'unlike';
+        }
+
     })
+    
     
     
 }
