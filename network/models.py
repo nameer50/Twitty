@@ -44,9 +44,6 @@ class Like(models.Model):
         }
 
 
-
-
-
 class Profile(models.Model):
     following = models.ManyToManyField(User, null=True)
 

@@ -71,8 +71,8 @@ function get_posts(event){
           
             fetch(`/liked/${post.id}`)
             .then(response => response.json())
-            .then(post => {
-                console.log(post);
+            .then(liked => {
+                console.log(liked);
             })
 
             card_body.innerHTML += `<button id="like" data-post="${post.id}">Like</button>`;
@@ -105,7 +105,6 @@ function liked_post(event){
         if (result['sucess'] == 'liked'){
             event.target.innerHTML = 'unlike';
         }
-
     })
     
     

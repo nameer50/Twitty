@@ -114,10 +114,8 @@ def getposts(request):
 
 def liked(request, post_id):
     if request.method == "GET":
-    
-            post = Post.objects.get(pk=post_id)
-            posts = Like.objects.get(user_like=request.user.id, post=post)
-            return JsonResponse({'data':posts})
+        posts = Post.objects.filter(pk=post_id)
+        return JsonResponse([post.serialize() for post in posts], safe=False)
    
         
 
