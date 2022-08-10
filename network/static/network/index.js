@@ -59,11 +59,7 @@ function get_posts(event){
         console.log(posts);
         
         posts.forEach(post => {
-
-       
-
-
-
+            
             const element = document.createElement('div');
             const card_header = document.createElement('div');
             const card_body = document.createElement('div');
@@ -85,6 +81,9 @@ function get_posts(event){
                 }
                 else{
                     card_body.innerHTML += `<button id="unlike" data-post="${post.id}">unlike</button>`;
+                    document.querySelectorAll('#unlike').forEach( () => {
+                        addEventListener('click', liked_post);
+                    });
                 }
             });
 
@@ -93,25 +92,13 @@ function get_posts(event){
             element.append(card_header);
             element.append(card_body);
             document.querySelector('#all-posts').append(element);
-
-            document.querySelectorAll('#like').forEach( () => {
-                addEventListener('click', liked_post);
-            });
-            
-            
         });
     });
-
-
-
-
-
-
-
-    
+   
 }
 
 function liked_post(event){
+    if (event.target.id == 'like'){
     fetch('/Allposts', {
         method: 'PUT',
         body: JSON.stringify({
@@ -124,8 +111,14 @@ function liked_post(event){
         console.log(result);
         if (result['sucess'] == 'liked'){
             event.target.innerHTML = 'unlike';
+            event.target.setAttribute('id', 'unlike');
         }
     })
+}
+else{
+    //GONNA DELETE THE LIKE AND SET THE INNER HTML OF THE TARGET TO LIKE COOL BROOO
+}
+
     
 }
 
