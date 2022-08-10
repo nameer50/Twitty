@@ -97,14 +97,14 @@ function get_posts(event){
    
 }
 
+
 function liked_post(event){
-    if (event.target.id == 'like'){
     fetch('/Allposts', {
         method: 'PUT',
         body: JSON.stringify({
-            post : event.target.dataset.post
+            post : event.target.dataset.post,
+            type : event.target.id
         }),
-
     })
     .then(response => response.json())
     .then(result => {
@@ -113,28 +113,13 @@ function liked_post(event){
             event.target.innerHTML = 'unlike';
             event.target.setAttribute('id', 'unlike');
         }
-    })
-}
-else{
-    //GONNA DELETE THE LIKE AND SET THE INNER HTML OF THE TARGET TO LIKE COOL BROOO
-    fetch('/Allposts', {
-        method: 'POST',
-        body: JSON.stringify({
-            post : event.target.dataset.post
-        }),
-
-    })
-    .then(response => response.json())
-    .then(result => {
-        console.log(result);
-        if (result['sucess'] == 'unliked'){
+        else if (result['sucess'] == 'unliked'){
             event.target.innerHTML = 'like';
             event.target.setAttribute('id', 'like');
         }
-    })
-}
+    });
 
-    
+
 }
 
 
