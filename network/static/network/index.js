@@ -74,15 +74,15 @@ function get_posts(event){
             .then(result => {
                 if (result['error'] == 'like object does not exist'){
                     card_body.innerHTML += `<button id="like" data-post="${post.id}">Like</button>`;
-                    document.querySelectorAll('#like').forEach( () => {
-                        addEventListener('click', liked_post);
+                    document.querySelectorAll('#like').forEach( el => {
+                        el.addEventListener('click', liked_post);
                     });
                     
                 }
                 else{
                     card_body.innerHTML += `<button id="unlike" data-post="${post.id}">unlike</button>`;
-                    document.querySelectorAll('#unlike').forEach( () => {
-                        addEventListener('click', liked_post);
+                    document.querySelectorAll('#unlike').forEach( el => {
+                        el.addEventListener('click', liked_post);
                     });
                 }
             });
@@ -117,6 +117,21 @@ function liked_post(event){
 }
 else{
     //GONNA DELETE THE LIKE AND SET THE INNER HTML OF THE TARGET TO LIKE COOL BROOO
+    fetch('/Allposts', {
+        method: 'POST',
+        body: JSON.stringify({
+            post : event.target.dataset.post
+        }),
+
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+        if (result['sucess'] == 'unliked'){
+            event.target.innerHTML = 'like';
+            event.target.setAttribute('id', 'like');
+        }
+    })
 }
 
     

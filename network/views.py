@@ -111,6 +111,20 @@ def getposts(request):
         except KeyError:
             return JsonResponse({'keyerror':'no liked'})
 
+    elif request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            post = data["post"]
+            post = Post.objects.get(pk=post)
+            user = User.objects.get(pk=request.user.id)
+            l = Like.objects.get(post=post, user_like=user)
+            l.delete()
+            return JsonResponse({'sucess':'unliked'})
+        except KeyError:
+            return JsonResponse({'keyerror':'no liked'})
+
+
+
 
 def liked(request, post_id):
     if request.method == "GET":
