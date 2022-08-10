@@ -49,46 +49,66 @@ function get_posts(event){
     document.querySelector('#all-posts').innerHTML = '';
     document.querySelector('#all-posts').style.display = 'block';
 
- 
+    list = [];
 
+    
 
     fetch('/Allposts')
     .then(response => response.json())
     .then(posts => {
         console.log(posts);
+        
         posts.forEach(post => {
+
+       
+
+
+
             const element = document.createElement('div');
             const card_header = document.createElement('div');
             const card_body = document.createElement('div');
-
             card_body.classList.add('card-body');
             card_header.classList.add('card-header');
-
             card_body.innerHTML = `<h5>${post.post}</h5>`;
             card_header.innerHTML = `${post.user_post}`;
-            card_header.innerHTML += ' ' + ' ' + `${post.time}`
+            card_header.innerHTML += ' ' + ' ' + `${post.time}`;
 
-          
             fetch(`/liked/${post.id}`)
             .then(response => response.json())
-            .then(liked => {
-                console.log(liked);
-            })
+            .then(result => {
+                if (result['error'] == 'like object does not exist'){
+                    card_body.innerHTML += `<button id="like" data-post="${post.id}">Like</button>`;
+                    document.querySelectorAll('#like').forEach( () => {
+                        addEventListener('click', liked_post);
+                    });
+                    
+                }
+                else{
+                    card_body.innerHTML += `<button id="unlike" data-post="${post.id}">unlike</button>`;
+                }
+            });
 
-            card_body.innerHTML += `<button id="like" data-post="${post.id}">Like</button>`;
             card_body.innerHTML += `<button id="comment">Comment</button>`;
-
             element.classList.add('card');
             element.append(card_header);
             element.append(card_body);
-            
             document.querySelector('#all-posts').append(element);
-            
+
             document.querySelectorAll('#like').forEach( () => {
                 addEventListener('click', liked_post);
             });
+            
+            
         });
     });
+
+
+
+
+
+
+
+    
 }
 
 function liked_post(event){
@@ -107,6 +127,7 @@ function liked_post(event){
         }
     })
     
-    
-    
 }
+
+
+

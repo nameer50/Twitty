@@ -39,7 +39,7 @@ class Like(models.Model):
         return {
             "id":self.id,
             "user_like":self.user_like.username,
-            "post": self.post
+            "post": self.post.id
             
         }
 

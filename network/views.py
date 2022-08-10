@@ -114,8 +114,12 @@ def getposts(request):
 
 def liked(request, post_id):
     if request.method == "GET":
-        posts = Post.objects.filter(pk=post_id)
-        return JsonResponse([post.serialize() for post in posts], safe=False)
+        posts = Post.objects.get(pk=post_id)
+        try:
+            like = Like.objects.get(post=posts, user_like=request.user)
+            return JsonResponse(like.serialize() , safe=False)
+        except Like.DoesNotExist:
+            return JsonResponse({'error':'like object does not exist'})
    
         
 
