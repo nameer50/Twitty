@@ -110,11 +110,13 @@ def getposts(request):
             if type == 'like':
                 l = Like(post=post, user_like=user)
                 l.save()
-                return JsonResponse({'sucess':'liked'})
+                likes = post.serialize()['likes']
+                return JsonResponse({'sucess':'liked', 'likes':likes})
             elif type == 'unlike':
                 l = Like.objects.get(post=post, user_like=user)
                 l.delete()
-                return JsonResponse({'sucess':'unliked'})
+                likes = post.serialize()['likes']
+                return JsonResponse({'sucess':'unliked', 'likes':likes})
         except:
             return JsonResponse({'error':'something went wrong'})
 

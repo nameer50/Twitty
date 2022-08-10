@@ -48,11 +48,7 @@ function get_posts(event){
     event.preventDefault();
     document.querySelector('#all-posts').innerHTML = '';
     document.querySelector('#all-posts').style.display = 'block';
-
-    list = [];
-
     
-
     fetch('/Allposts')
     .then(response => response.json())
     .then(posts => {
@@ -73,14 +69,14 @@ function get_posts(event){
             .then(response => response.json())
             .then(result => {
                 if (result['error'] == 'like object does not exist'){
-                    card_body.innerHTML += `<button id="like" data-post="${post.id}">Like</button>`;
+                    card_body.innerHTML += `<button id="like" data-post="${post.id}">Like: ${post.likes}</button>`;
                     document.querySelectorAll('#like').forEach( el => {
                         el.addEventListener('click', liked_post);
                     });
                     
                 }
                 else{
-                    card_body.innerHTML += `<button id="unlike" data-post="${post.id}">unlike</button>`;
+                    card_body.innerHTML += `<button id="unlike" data-post="${post.id}">Unlike: ${post.likes}</button>`;
                     document.querySelectorAll('#unlike').forEach( el => {
                         el.addEventListener('click', liked_post);
                     });
@@ -109,16 +105,18 @@ function liked_post(event){
     .then(response => response.json())
     .then(result => {
         console.log(result);
+        const likes = result['likes']
         if (result['sucess'] == 'liked'){
-            event.target.innerHTML = 'unlike';
+            
+            event.target.innerHTML = `Unlike: ${likes}`;
             event.target.setAttribute('id', 'unlike');
         }
         else if (result['sucess'] == 'unliked'){
-            event.target.innerHTML = 'like';
+            
+            event.target.innerHTML = `Like: ${likes}`;
             event.target.setAttribute('id', 'like');
         }
     });
-
 
 }
 
