@@ -71,35 +71,20 @@ def register(request):
         return render(request, "network/register.html")
 
 
-def profile(request):
-    if request.method == "GET":
-        return JsonResponse({"clicked":f"{request.user}"}) 
-
-@csrf_exempt
-def makepost(request):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        try:
-            user = data["user_post"]
-            user = User.objects.get(pk=user)
-            post = data["post"]
-            if len(post) == 0:
-                raise Exception
-            p = Post(user_post=user, post=post)
-            p.save()
-            return JsonResponse({"success":"post created"})
-        except:
-            return JsonResponse({"error":"something went wrong"})
-
-
-@csrf_exempt        
-def getposts(request):
+def posts(request):
     if request.method == "GET":
         posts = Post.objects.all()
         posts = posts.order_by("-timestamp").all()
-        return JsonResponse([post.serialize() for post in posts], safe=False)
+        posts = [post.serialize() for post in posts]
+        liked = Like.objects.filter(user_like=request.user)
+        liked = [like.post.id for like in liked]
+        return render(request, 'network/posts.html',{'posts':posts, 'liked':liked})
 
-    elif request.method == "PUT":
+
+
+@csrf_exempt
+def liked(request):
+    if request.method == "POST":
         try:
             data = json.loads(request.body)
             post = data["post"]
@@ -111,25 +96,41 @@ def getposts(request):
                 l = Like(post=post, user_like=user)
                 l.save()
                 likes = post.serialize()['likes']
-                return JsonResponse({'sucess':'liked', 'likes':likes})
+                return JsonResponse({'success':'liked', 'likes':likes})
             elif type == 'unlike':
                 l = Like.objects.get(post=post, user_like=user)
                 l.delete()
                 likes = post.serialize()['likes']
-                return JsonResponse({'sucess':'unliked', 'likes':likes})
+                return JsonResponse({'success': 'unliked', 'likes':likes})
         except:
             return JsonResponse({'error':'something went wrong'})
 
-                
-def liked(request, post_id):
-    if request.method == "GET":
-        posts = Post.objects.get(pk=post_id)
-        try:
-            like = Like.objects.get(post=posts, user_like=request.user)
-            return JsonResponse(like.serialize() , safe=False)
-        except Like.DoesNotExist:
-            return JsonResponse({'error':'like object does not exist'})
-   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
 
 
