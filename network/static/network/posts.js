@@ -72,15 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('#like').forEach(el => {
                 el.addEventListener('click', liked_post);
             });
-
-
-
-           
-
-        })
-
+        });
 
         //Clear out the post-text field
-        
         document.querySelector('#post-text').value = '';
     }
