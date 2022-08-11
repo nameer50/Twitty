@@ -4,7 +4,7 @@
 {% block body %}
 
 <form class="input-group mb-3" id="post-form">
-  {% csrf_token %}
+
   <button type="submit" class="btn btn-outline-secondary" type="button" id="share">Share</button>
   <input required type="text" class="form-control" placeholder="Whats on your mind?" id="post-text">
 </form>
@@ -18,7 +18,7 @@
         </div>
         <div class="card-body">
           <h5 class="card-title">{{post.post}}</h5>
-          {% csrf_token %}
+        
           {% if post.id in liked %}
           <button class="btn btn-primary" id="unlike" data-post="{{post.id}}">Unlike: {{post.likes}}</button>
           {% else %}

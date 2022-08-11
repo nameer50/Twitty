@@ -86,13 +86,10 @@ def posts(request):
         post = data['post']
         p = Post(user_post=user_post, post=post)
         p.save()
-        return HttpRespon
+        new_post = p.serialize()
 
 
-        
-    
-
-
+        return JsonResponse({'success': new_post})
 
 
 @csrf_exempt

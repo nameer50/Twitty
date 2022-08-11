@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    document.querySelector('#post-text').value = '';
+
     document.querySelectorAll('#like').forEach(el => {
         el.addEventListener('click', liked_post);
     });
@@ -36,16 +38,49 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }
 
-    function make_post(){
+    function make_post(event){
+        event.preventDefault();
         fetch('/posts', {
             method: 'POST',
             body : JSON.stringify({
                 post: document.querySelector('#post-text').value
-    
             }),
         })
         .then(response => response.json())
         .then(result => {
-            console.log(result);
+            console.log(result['success']);
+
+            const post = result['success'];
+
+            const new_post = document.createElement('div');
+            const card_header = document.createElement('div');
+            const card_body = document.createElement('div');
+
+            new_post.classList.add('card');
+            card_header.classList.add('card-header');
+            card_body.classList.add('card-body');
+
+            card_header.innerHTML = `${post.user_post}<br>${post.time}`;
+            card_body.innerHTML = `<h5 class='card-title'>${post.post}</h5>`;
+            card_body.innerHTML += `<button id='like' class='btn btn-primary' data-post=${post.id}>Like: 0</button> <button class='btn btn-primary'>Comment</button>`;
+            
+            new_post.append(card_header);
+            new_post.append(card_body);
+
+            document.querySelector('#all-posts').prepend(new_post);
+
+            document.querySelectorAll('#like').forEach(el => {
+                el.addEventListener('click', liked_post);
+            });
+
+
+
+           
+
         })
+
+
+        //Clear out the post-text field
+        
+        document.querySelector('#post-text').value = '';
     }
