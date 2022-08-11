@@ -8,14 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
         el.addEventListener('click', liked_post);
     });
 
-    
-    
-
-
+    document.querySelector('#post-form').onsubmit = make_post;
   });
-
-
-
 
   function liked_post(event){
     fetch('/liked', {
@@ -41,3 +35,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 }
+
+    function make_post(){
+        fetch('/posts', {
+            method: 'POST',
+            body : JSON.stringify({
+                post: document.querySelector('#post-text').value
+    
+            }),
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+        })
+    }

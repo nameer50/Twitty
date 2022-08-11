@@ -1,3 +1,4 @@
+import re
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -70,7 +71,7 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
-
+@csrf_exempt
 def posts(request):
     if request.method == "GET":
         posts = Post.objects.all()
@@ -79,6 +80,18 @@ def posts(request):
         liked = Like.objects.filter(user_like=request.user)
         liked = [like.post.id for like in liked]
         return render(request, 'network/posts.html',{'posts':posts, 'liked':liked})
+    if request.method == "POST":
+        data = json.loads(request.body)
+        user_post = request.user
+        post = data['post']
+        p = Post(user_post=user_post, post=post)
+        p.save()
+        return HttpRespon
+
+
+        
+    
+
 
 
 

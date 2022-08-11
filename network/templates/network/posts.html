@@ -4,10 +4,10 @@
 {% block body %}
 
 <form class="input-group mb-3" id="post-form">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-outline-secondary" type="button" id="{{request.user.id}}" name="make-post">Share</button>
-    <input required type="text" class="form-control" placeholder="Whats on your mind?" id="post-text">
-  </form>
+  {% csrf_token %}
+  <button type="submit" class="btn btn-outline-secondary" type="button" id="share">Share</button>
+  <input required type="text" class="form-control" placeholder="Whats on your mind?" id="post-text">
+</form>
 
 <div id="all-posts">
     {% for post in posts %}
@@ -19,15 +19,11 @@
         <div class="card-body">
           <h5 class="card-title">{{post.post}}</h5>
           {% csrf_token %}
-
           {% if post.id in liked %}
           <button class="btn btn-primary" id="unlike" data-post="{{post.id}}">Unlike: {{post.likes}}</button>
           {% else %}
           <button class="btn btn-primary" id="like" data-post="{{post.id}}">Like: {{post.likes}}</button>
-          {% endif %}
-          
-
-          
+          {% endif %}          
           <button class="btn btn-primary">Comment</button>
         </div>
       </div>
