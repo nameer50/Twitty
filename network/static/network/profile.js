@@ -25,15 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
         new_follow.innerHTML = `${result['user']}`;
         new_follow.setAttribute('id', `${result['user']}`);
         document.querySelector('#followers').append(new_follow);
-
-
       }
+      
       else if (result['success'] == 'unfollowed'){
         event.target.innerText = 'Follow';
         event.target.dataset.type = 'follow';
         const user = document.querySelector(`#${result['user']}`);
         user.parentElement.removeChild(user);
       }
-
     });
   }

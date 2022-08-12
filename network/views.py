@@ -12,7 +12,17 @@ from .models import User,Post,Like,Comments,Profile
 
 
 def index(request):
-    return render(request, "network/index.html")
+    # display the users post and the posts of people that the user follows
+    user = User.objects.get(pk=request.user.id)
+    profile = Profile.objects.get(pk=user.id)
+    following = [user.id for user in profile.following.all()]
+    following.append(user.id)
+    posts = Post.objects.filter(user_post__in=following)
+    posts = posts.order_by("-timestamp").all()
+    posts = [post.serialize() for post in posts]
+    liked = Like.objects.filter(user_like=request.user)
+    liked = [like.post.id for like in liked]
+    return render(request, "network/index.html", {'posts':posts, 'liked':liked})
 
 
 def login_view(request):
@@ -120,8 +130,13 @@ def profile(request, username):
         profile = Profile.objects.get(pk=user.id)
         following = [user for user in profile.following.all()]
         followers = [user for user in profile.followers.all()]
+        posts = Post.objects.filter(user_post=user)
+        posts = posts.order_by("-timestamp").all()
+        posts = [post.serialize() for post in posts]
+        liked = Like.objects.filter(user_like=request.user)
+        liked = [like.post.id for like in liked]
 
-        return render(request, 'network/profile.html', {'following': following, 'followers':followers, 'profile':username})
+        return render(request, 'network/profile.html', {'following': following, 'followers':followers, 'profile':username, 'posts':posts, 'liked':liked})
 
 
 @csrf_exempt
@@ -133,7 +148,6 @@ def follow(request):
         user = User.objects.get(pk=request.user.id)
         user_toggled_on_profile = Profile.objects.get(pk=user_toggled_on)
         user_profile = Profile.objects.get(pk=request.user)
-
 
         if type == 'follow':
             user_profile.following.add(user_toggled_on)

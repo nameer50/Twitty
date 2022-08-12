@@ -30,6 +30,36 @@
 {% endfor %}
 </div>
 
+
+{% if user.username == profile %}
+<form class="input-group mb-3" id="post-form">
+    <button type="submit" class="btn btn-outline-secondary" type="button" id="share">Share</button>
+    <input required type="text" class="form-control" placeholder="Whats on your mind?" id="post-text">
+  </form>
+{% endif %}
+
+
+<div id="all-posts">
+    {% for post in posts %}
+    <div class="card">
+        <div class="card-header">
+          <a href="{% url 'profile' post.user_post %}">{{post.user_post}}</a>
+          <br>
+          {{post.time}}
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{post.post}}</h5>
+        
+          {% if post.id in liked %}
+          <button class="btn btn-primary" id="unlike" data-post="{{post.id}}">Unlike: {{post.likes}}</button>
+          {% else %}
+          <button class="btn btn-primary" id="like" data-post="{{post.id}}">Like: {{post.likes}}</button>
+          {% endif %}          
+          <button class="btn btn-primary">Comment</button>
+        </div>
+      </div>
+    {% endfor %}
+</div>
 {% endblock %}
 
 
@@ -37,7 +67,8 @@
 {% block script %}
 {% if user.username != profile %}
 <script src="{% static 'network/profile.js' %}"></script>
+<script src="{% static 'network/profile_other_posts.js' %}"></script>
 {% else %}
-<script src=""></script>
+<script src="{% static 'network/posts.js' %}"></script>
 {% endif %}
 {% endblock %}
