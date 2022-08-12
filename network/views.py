@@ -87,8 +87,6 @@ def posts(request):
         p = Post(user_post=user_post, post=post)
         p.save()
         new_post = p.serialize()
-
-
         return JsonResponse({'success': new_post})
 
 
@@ -114,6 +112,17 @@ def liked(request):
                 return JsonResponse({'success': 'unliked', 'likes':likes})
         except:
             return JsonResponse({'error':'something went wrong'})
+
+
+def profile(request, username):
+    if request.method == "GET":
+        user = User.objects.get(username=username)
+
+        profile = Profile.objects.get(pk=user.id)
+        following = [user for user in profile.following.all()]
+        followers = [user for user in profile.followers.all()]
+
+        return render(request, 'network/profile.html', {'following': following, 'followers':followers})
 
 
 

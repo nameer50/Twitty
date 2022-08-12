@@ -45,7 +45,10 @@ class Like(models.Model):
 
 
 class Profile(models.Model):
-    following = models.ManyToManyField(User, null=True)
+    user_profile = models.ForeignKey(User,primary_key=True, on_delete=models.CASCADE, related_name="user_profile", default="1")
+    following = models.ManyToManyField(User, null=True, related_name='followings')
+    followers = models.ManyToManyField(User, null=True, related_name='followers')
+
 
 
     

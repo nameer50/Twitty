@@ -16,7 +16,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ("id", "user_post", "post", "timestamp")
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("id",)
+    list_display = ("user_profile",)
 
 
 admin.site.register(User, UserAdmin)

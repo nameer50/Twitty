@@ -1,0 +1,23 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<h1> Following </h1>
+{% for user in following %}
+<p>{{user}}</p>
+{% endfor %}
+
+<h1> Followers </h1>
+{% for user in followers %}
+<p>{{user}}</p>
+{% endfor %}
+
+
+{% endblock %}
+
+
+
+{% block script %}
+    
+{% endblock %}

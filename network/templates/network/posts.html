@@ -13,8 +13,9 @@
     {% for post in posts %}
     <div class="card">
         <div class="card-header">
-          {{post.user_post}}
-          <br>{{post.time}}
+          <a href="{% url 'profile' post.user_post %}">{{post.user_post}}</a>
+          <br>
+          {{post.time}}
         </div>
         <div class="card-body">
           <h5 class="card-title">{{post.post}}</h5>

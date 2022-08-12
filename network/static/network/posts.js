@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card_header.classList.add('card-header');
             card_body.classList.add('card-body');
 
-            card_header.innerHTML = `${post.user_post}<br>${post.time}`;
+            card_header.innerHTML = `<a href="profile/${post.user_post}">${post.user_post}</a><br>${post.time}`;
             card_body.innerHTML = `<h5 class='card-title'>${post.post}</h5>`;
             card_body.innerHTML += `<button id='like' class='btn btn-primary' data-post=${post.id}>Like: 0</button> <button class='btn btn-primary'>Comment</button>`;
             
