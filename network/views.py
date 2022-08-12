@@ -129,16 +129,20 @@ def follow(request):
     if request.method == "POST":
         data = json.loads(request.body)
         type = data["type"]
-        user_toggled_on = data["user_toggled_on"]
-        user_toggled_on = User.objects.get(username=user_toggled_on)
+        user_toggled_on = User.objects.get(username=data["user_toggled_on"])
+        user = User.objects.get(pk=request.user.id)
         user_toggled_on_profile = Profile.objects.get(pk=user_toggled_on)
         user_profile = Profile.objects.get(pk=request.user)
-        user = User.objects.get(pk=request.user.id)
+
 
         if type == 'follow':
             user_profile.following.add(user_toggled_on)
             user_toggled_on_profile.followers.add(user)
-            return JsonResponse({'success':'nice work'})
+            return JsonResponse({'success':'followed'})
+        if type == 'unfollow':
+            user_profile.following.remove(user_toggled_on)
+            user_toggled_on_profile.followers.remove(user)
+            return JsonResponse({'sucess': 'unfollowed'})
 
             
 

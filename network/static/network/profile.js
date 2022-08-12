@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelector('#follow').addEventListener('click', follow);
+    
 
   });
 
@@ -10,11 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
       method: "POST",
       body: JSON.stringify({
         user_toggled_on: event.target.dataset.user,
-        type: event.target.id
+        type: event.target.dataset.type
       }),
     })
     .then(response => response.json())
     .then(result => {
       console.log(result);
+      // CHECK THE RESULT AND CHANGE THE BUTTON TEXT
     });
   }

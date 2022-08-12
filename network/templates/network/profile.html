@@ -11,9 +11,9 @@
 {% endif %}
 
 {% if user in followers %}
-<button class="btn btn-primary" id="unfollow" data-user="{{profile}}">Unfollow</button>
+<button class="btn btn-primary" id="follow" data-type="unfollow" data-user="{{profile}}">Unfollow</button>
 {% elif user.username != profile  %}
-<button class="btn btn-primary" id="follow" data-user="{{profile}}">Follow</button>
+<button class="btn btn-primary" id="follow" data-type="follow" data-user="{{profile}}">Follow</button>
 {% endif %}
 
 <h1> Following </h1>
