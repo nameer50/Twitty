@@ -16,16 +16,19 @@
 <button class="btn btn-primary" id="follow" data-type="follow" data-user="{{profile}}">Follow</button>
 {% endif %}
 
+<div id="following">
 <h1> Following </h1>
 {% for user in following %}
-<p>{{user}}</p>
+<p id="{{user}}">{{user}}</p>
 {% endfor %}
+</div>
 
+<div id ="followers">
 <h1> Followers </h1>
 {% for user in followers %}
-<p>{{user}}</p>
+<p id="{{user}}">{{user}}</p>
 {% endfor %}
-
+</div>
 
 {% endblock %}
 

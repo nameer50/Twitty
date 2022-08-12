@@ -138,11 +138,11 @@ def follow(request):
         if type == 'follow':
             user_profile.following.add(user_toggled_on)
             user_toggled_on_profile.followers.add(user)
-            return JsonResponse({'success':'followed'})
+            return JsonResponse({'success':'followed', 'user':user.username})
         if type == 'unfollow':
             user_profile.following.remove(user_toggled_on)
             user_toggled_on_profile.followers.remove(user)
-            return JsonResponse({'sucess': 'unfollowed'})
+            return JsonResponse({'success': 'unfollowed', 'user':user.username})
 
             
 

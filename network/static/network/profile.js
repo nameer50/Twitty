@@ -18,5 +18,22 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(result => {
       console.log(result);
       // CHECK THE RESULT AND CHANGE THE BUTTON TEXT
+      if (result['success'] == 'followed'){
+        event.target.innerText = 'Unfollow';
+        event.target.dataset.type = 'unfollow';
+        const new_follow = document.createElement('p');
+        new_follow.innerHTML = `${result['user']}`;
+        new_follow.setAttribute('id', `${result['user']}`);
+        document.querySelector('#followers').append(new_follow);
+
+
+      }
+      else if (result['success'] == 'unfollowed'){
+        event.target.innerText = 'Follow';
+        event.target.dataset.type = 'follow';
+        const user = document.querySelector(`#${result['user']}`);
+        user.parentElement.removeChild(user);
+      }
+
     });
   }
