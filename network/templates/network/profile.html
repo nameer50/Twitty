@@ -3,6 +3,19 @@
 
 {% block body %}
 
+
+{% if user.username == profile %}
+<h1>This is your profile</h1>
+{% else %}
+<h1>{{profile}}'s profile</h1>
+{% endif %}
+
+{% if user in followers %}
+<button class="btn btn-primary" id="unfollow" data-post="{{profile}}">Unfollow</button>
+{% elif user.username != profile  %}
+<button class="btn btn-primary" id="follow" data-post="{{profile}}">Follow</button>
+{% endif %}
+
 <h1> Following </h1>
 {% for user in following %}
 <p>{{user}}</p>
@@ -19,5 +32,9 @@
 
 
 {% block script %}
-    
+{% if user.username != profile %}
+<script src="{% static 'network/profile.js' %}"></script>
+{% else %}
+<script src=""></script>
+{% endif %}
 {% endblock %}

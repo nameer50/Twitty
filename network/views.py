@@ -117,12 +117,11 @@ def liked(request):
 def profile(request, username):
     if request.method == "GET":
         user = User.objects.get(username=username)
-
         profile = Profile.objects.get(pk=user.id)
         following = [user for user in profile.following.all()]
         followers = [user for user in profile.followers.all()]
 
-        return render(request, 'network/profile.html', {'following': following, 'followers':followers})
+        return render(request, 'network/profile.html', {'following': following, 'followers':followers, 'profile':username})
 
 
 
