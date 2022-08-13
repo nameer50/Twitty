@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.querySelector('#post-form').onsubmit = make_post;
+
+    document.querySelectorAll('#edit').forEach(el => {
+        el.addEventListener('click', edit_post);
+    });
   });
 
   function liked_post(event){
@@ -62,7 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             card_header.innerHTML = `<a href="profile/${post.user_post}">${post.user_post}</a><br>${post.time}`;
             card_body.innerHTML = `<h5 class='card-title'>${post.post}</h5>`;
-            card_body.innerHTML += `<button id='like' class='btn btn-primary' data-post=${post.id}>Like: 0</button> <button class='btn btn-primary'>Comment</button>`;
+            card_body.innerHTML += `<button id='like' class='btn btn-primary' data-post=${post.id}>Like: 0</button> <button class='btn btn-primary'>Comment</button> <button class='btn btn-secondary' id='edit' data-post=${post.id}>Edit</button>`;
+            
             
             new_post.append(card_header);
             new_post.append(card_body);
@@ -72,8 +77,25 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('#like').forEach(el => {
                 el.addEventListener('click', liked_post);
             });
+            document.querySelectorAll('#edit').forEach(el => {
+                el.addEventListener('click', edit_post);
+            });
         });
 
         //Clear out the post-text field
         document.querySelector('#post-text').value = '';
+    }
+
+    function edit_post(event){
+        event.preventDefault();
+        fetch('/edit', {
+            method: 'PUT',
+            body: JSON.stringify({
+                post: event.target.dataset.post
+            }),
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+        });
     }

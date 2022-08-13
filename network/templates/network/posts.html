@@ -26,6 +26,9 @@
           <button class="btn btn-primary" id="like" data-post="{{post.id}}">Like: {{post.likes}}</button>
           {% endif %}          
           <button class="btn btn-primary">Comment</button>
+          {% if user.username == post.user_post %}
+          <button class="btn btn-secondary" id="edit" data-post="{{post.id}}">Edit</button>
+          {% endif %}
         </div>
       </div>
     {% endfor %}

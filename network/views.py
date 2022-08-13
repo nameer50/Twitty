@@ -7,12 +7,16 @@ from django.urls import reverse
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 from .models import User,Post,Like,Comments,Profile
 
 
 def index(request):
     # display the users post and the posts of people that the user follows
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
     user = User.objects.get(pk=request.user.id)
     profile = Profile.objects.get(pk=user.id)
     following = [user.id for user in profile.following.all()]
@@ -82,6 +86,7 @@ def register(request):
         return render(request, "network/register.html")
 
 @csrf_exempt
+@login_required(login_url="login")
 def posts(request):
     if request.method == "GET":
         posts = Post.objects.all()
@@ -98,6 +103,7 @@ def posts(request):
         p.save()
         new_post = p.serialize()
         return JsonResponse({'success': new_post})
+
 
 
 @csrf_exempt
@@ -157,6 +163,13 @@ def follow(request):
             user_profile.following.remove(user_toggled_on)
             user_toggled_on_profile.followers.remove(user)
             return JsonResponse({'success': 'unfollowed', 'user':user.username})
+
+
+@csrf_exempt
+def edit_post(request):
+    data = json.loads(request.body)
+    post = data['post']
+    return JsonResponse({'post':post})
 
             
 

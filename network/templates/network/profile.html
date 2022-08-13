@@ -19,14 +19,14 @@
 <div id="following">
 <h1> Following </h1>
 {% for user in following %}
-<p id="{{user}}">{{user}}</p>
+<a href="{% url 'profile' user %}" id="{{user}}">{{user}}</a>
 {% endfor %}
 </div>
 
 <div id ="followers">
 <h1> Followers </h1>
 {% for user in followers %}
-<p id="{{user}}">{{user}}</p>
+<a href="{% url 'profile' user %}" id="{{user}}">{{user}}</a>
 {% endfor %}
 </div>
 
@@ -56,6 +56,9 @@
           <button class="btn btn-primary" id="like" data-post="{{post.id}}">Like: {{post.likes}}</button>
           {% endif %}          
           <button class="btn btn-primary">Comment</button>
+          {% if user.username == profile %}
+          <button class="btn btn-secondary" id="edit" data-post="{{post.id}}">Edit</button>
+          {% endif %}
         </div>
       </div>
     {% endfor %}
