@@ -88,6 +88,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function edit_post(event){
         event.preventDefault();
+        const post = event.target.parentNode;
+        const form = post.querySelector('#edit-form');
+
+        form.style.display = 'block';
+        // edited text can be accessed from form.value
+        
+
         fetch('/edit', {
             method: 'PUT',
             body: JSON.stringify({
