@@ -15,6 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('#edit').forEach(el => {
         el.addEventListener('click', edit_post);
     });
+
+    document.querySelectorAll('#comment').forEach(el => {
+        el.addEventListener('click', comment);
+    });
+
+    document.querySelectorAll('')
+
   });
 
   function liked_post(event){
@@ -125,5 +132,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }); 
         });
+
+    }
+
+    function comment(event){
+        event.preventDefault();
+        const post = event.target.parentNode;
+        const comment_form = post.querySelector('#comment-form');
+        const make_comment = comment_form.querySelector('#comment-submit');
+        const comment_text = comment_form.querySelector('#comment-text');
+
+        comment_form.style.display = 'block';
+        comment_text.value = '';
+
+        make_comment.addEventListener('click', (event) => {
+            event.preventDefault();
+            fetch('/comment', {
+                method: 'POST',
+                body: JSON.stringify({
+                    post: event.target.dataset.post,
+                    comment: comment_text.value
+                }),
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+            });
+        });
+
+    }
+
+
+    function show_comments(event){
 
     }

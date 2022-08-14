@@ -180,30 +180,22 @@ def edit_post(request):
         post= post.serialize()
         return JsonResponse({'post':post})
 
-            
 
+@csrf_exempt
+def comment(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        comment = data['comment']
+        if len(comment) == 0:
+            return JsonResponse({'error': 'no comment provided'})
 
+        post = Post.objects.get(pk=data['post'])
+        user = User.objects.get(pk=request.user.id)
+        c = Comments(comment=comment, post=post, user_comment=user)
+        c.save()
+        return JsonResponse({'success':'commented'})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 

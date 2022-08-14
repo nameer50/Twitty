@@ -16,12 +16,15 @@ class Post(models.Model):
 
     def serialize(self):
         likes = len(self.liked_on.all())
+        comments = self.commented_on.all()
         return {
             "id":self.id,
             "user_post":self.user_post.username,
             "post": self.post,
             "time":self.timestamp.strftime("%b %d %Y, %I:%M %p"),
-            "likes":likes
+            "likes":likes,
+            "comments":comments,
+            "how_many_comments":len(comments)
         }
 
 

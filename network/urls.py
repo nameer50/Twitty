@@ -13,6 +13,7 @@ urlpatterns = [
 
     path("follow", views.follow, name="follow"),
     path("liked", views.liked, name="liked_posts"),
-    path("edit", views.edit_post, name="edit_post")
+    path("edit", views.edit_post, name="edit_post"),
+    path("comment", views.comment, name="comment")
 
 ]
