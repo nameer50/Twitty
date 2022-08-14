@@ -59,18 +59,26 @@ document.addEventListener('DOMContentLoaded', function() {
             const new_post = document.createElement('div');
             const card_header = document.createElement('div');
             const card_body = document.createElement('div');
+            const edit_form = document.createElement('form');
 
             new_post.classList.add('card');
             card_header.classList.add('card-header');
             card_body.classList.add('card-body');
+            edit_form.classList.add('mb-3');
+            edit_form.setAttribute('id', 'edit-form');
+
 
             card_header.innerHTML = `<a href="profile/${post.user_post}">${post.user_post}</a><br>${post.time}`;
             card_body.innerHTML = `<h5 class='card-title'>${post.post}</h5>`;
-            card_body.innerHTML += `<button id='like' class='btn btn-primary' data-post=${post.id}>Like: 0</button> <button class='btn btn-primary'>Comment</button> <button class='btn btn-secondary' id='edit' data-post=${post.id}>Edit</button>`;
+            card_body.innerHTML += `<button id='like' class='btn btn-primary' data-post=${post.id}>Like: 0</button> <button class='btn btn-primary'>Comment</button> <button class='btn btn-secondary' id='edit'>Edit</button>`;
+            edit_form.innerHTML = `<textarea class="form-control" id="edit-text" rows="3"></textarea> <button class="btn btn-primary" id="edit-submit" data-post="${post.id}" type="submit">Save</button>`;
             
-            
+            edit_form.style.display = "none";
             new_post.append(card_header);
+            card_body.append(edit_form);
             new_post.append(card_body);
+
+            
 
             document.querySelector('#all-posts').prepend(new_post);
 
@@ -90,19 +98,32 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         const post = event.target.parentNode;
         const form = post.querySelector('#edit-form');
+        const submit = form.querySelector('#edit-submit');
 
         form.style.display = 'block';
-        // edited text can be accessed from form.value
-        
-
-        fetch('/edit', {
-            method: 'PUT',
-            body: JSON.stringify({
-                post: event.target.dataset.post
-            }),
-        })
-        .then(response => response.json())
-        .then(result => {
-            console.log(result);
+        form.querySelector('#edit-text').value = '';
+    
+        submit.addEventListener('click', (event) => {
+            event.preventDefault();
+            fetch('/edit', {
+                method: 'PUT',
+                body: JSON.stringify({
+                    post: event.target.dataset.post,
+                    text: form.querySelector('#edit-text').value
+                }),
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result['error'] == 'no text submitted'){
+                    form.querySelector('#edit-text').value = '';
+                    form.style.display = "none";
+                }
+                else{
+                post.querySelector('.card-title').innerHTML = result['post'].post;
+                form.querySelector('#edit-text').value = '';
+                form.style.display = "none";
+                }
+            }); 
         });
+
     }

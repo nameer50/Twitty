@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from .models import User,Post,Like,Comments,Profile
 
 
+@login_required(login_url='login')
 def index(request):
     # display the users post and the posts of people that the user follows
     if not request.user.is_authenticated:
@@ -167,9 +168,17 @@ def follow(request):
 
 @csrf_exempt
 def edit_post(request):
-    data = json.loads(request.body)
-    post = data['post']
-    return JsonResponse({'post':post})
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        text = data['text']
+        if len(text) == 0:
+            return JsonResponse({'error':'no text submitted'})
+        post = data["post"]
+        post = Post.objects.get(pk=post)
+        post.post = text
+        post.save()
+        post= post.serialize()
+        return JsonResponse({'post':post})
 
             
 

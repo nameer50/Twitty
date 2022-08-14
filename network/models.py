@@ -12,6 +12,7 @@ class Post(models.Model):
     user_post = models.ForeignKey(User, on_delete=models.CASCADE,related_name="user_post", default="1")
     post = models.CharField(max_length=2000, null=False, blank=False, default="")
     timestamp = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def serialize(self):
         likes = len(self.liked_on.all())

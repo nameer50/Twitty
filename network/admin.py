@@ -13,7 +13,7 @@ class LikeAdmin(admin.ModelAdmin):
     list_display = ("id","post", "user_like")
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ("id", "user_post", "post", "timestamp")
+    list_display = ("id", "user_post", "post", "timestamp", "updated_at")
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ("user_profile",)

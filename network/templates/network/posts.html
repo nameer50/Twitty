@@ -27,11 +27,11 @@
           {% endif %}          
           <button class="btn btn-primary">Comment</button>
           {% if user.username == post.user_post %}
-          <button class="btn btn-secondary" id="edit" data-post="{{post.id}}">Edit</button>
+          <button class="btn btn-secondary" id="edit">Edit</button>
           {% endif %}
           <form class="mb-3" id="edit-form" style="display: none;">
             <textarea class="form-control" id="edit-text" rows="3"></textarea>
-            <button class="btn btn-primary" id="edit-submit">Save</button>
+            <button class="btn btn-primary" id="edit-submit" data-post="{{post.id}}" type="submit">Save</button>
           </form>
         </div>
       </div>
