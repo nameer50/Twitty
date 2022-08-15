@@ -135,17 +135,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
     }
 
+    function show_comments(event){
+        event.preventDefault();
+
+        //Gives us the card for the whole post
+        const post = event.target.parentNode.parentNode;
+        
+
+        const comments = post.querySelector('#comments');
+        const new_comment_div = post.querySelector('#new-comment');
+
+        if (comments.style.display == 'none'){
+        comments.style.display = 'block';
+        new_comment_div.style.display = 'block';
+       
+        }
+        else{
+            comments.style.display = 'none';
+            new_comment_div.style.display = 'none';
+            
+        }
+        new_comment_div.querySelector('#add-comment').addEventListener('click', comment);
+
+    }
+
+
     function comment(event){
         event.preventDefault();
-        event.target.style.display = 'none';
 
+        const add_comment_button = event.target;
         const new_comment_form = event.target.parentNode.querySelector('#comment-form');
         const comment_text = new_comment_form.querySelector('#comment-text');
-        comment_text.value = '';
-
         const comment_div = event.target.parentNode.parentNode.querySelector('#comments');
+        const card_body = event.target.parentNode.parentNode.querySelector('.card-body');
+        const comment_button = card_body.querySelector('#show-comments');
 
+
+        add_comment_button.style.display = 'none';
+        comment_text.value = '';
         new_comment_form.style.display = 'block';
+
         new_comment_form.querySelector('#comment-submit').addEventListener('click', (event) => {
             event.preventDefault();
             fetch('/comment', {
@@ -167,39 +196,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             </blockquote>
                         </div>
                    </div>`;
-                   comment_text.value = '';
+                   comment_button.innerHTML = `Comments: ${result['comments_amount']}`;
                    new_comment_form.style.display = 'none';
+                   add_comment_button.style.display = 'block';
                 }
             });
-        });
-        
-
-
-
-    }
-
-
-    function show_comments(event){
-        event.preventDefault();
-
-        //Gives us the card fot the whole post
-        const post = event.target.parentNode.parentNode;
-        
-
-        const comments = post.querySelector('#comments');
-
-        if (comments.style.display == 'none'){
-        comments.style.display = 'block';
-       
-        }
-        else{
-            comments.style.display = 'none';
+            comment_text.value = '';
             
-        }
-        const new_comment_div = post.querySelector('#new-comment');
-
-        new_comment_div.style.display = 'block';
-
-        new_comment_div.querySelector('#add-comment').addEventListener('click', comment);
-
+        });
     }

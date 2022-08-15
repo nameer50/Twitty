@@ -193,7 +193,8 @@ def comment(request):
         user = User.objects.get(pk=request.user.id)
         c = Comments(comment=comment, post=post, user_comment=user)
         c.save()
-        return JsonResponse({'success':'commented', 'comment':c.comment, 'user_comment':c.user_comment.username})
+        post = post.serialize()
+        return JsonResponse({'success':'commented', 'comment':c.comment, 'user_comment':c.user_comment.username, 'comments_amount':post['how_many_comments']})
 
     
 
