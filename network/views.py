@@ -193,7 +193,7 @@ def comment(request):
         user = User.objects.get(pk=request.user.id)
         c = Comments(comment=comment, post=post, user_comment=user)
         c.save()
-        return JsonResponse({'success':'commented'})
+        return JsonResponse({'success':'commented', 'comment':c.comment, 'user_comment':c.user_comment.username})
 
     
 

@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
         el.addEventListener('click', edit_post);
     });
 
-    document.querySelectorAll('#comment').forEach(el => {
-        el.addEventListener('click', comment);
+    document.querySelectorAll('#show-comments').forEach(el => {
+        el.addEventListener('click', show_comments);
     });
 
-    document.querySelectorAll('')
+
 
   });
 
@@ -137,15 +137,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function comment(event){
         event.preventDefault();
-        const post = event.target.parentNode;
-        const comment_form = post.querySelector('#comment-form');
-        const make_comment = comment_form.querySelector('#comment-submit');
-        const comment_text = comment_form.querySelector('#comment-text');
+        event.target.style.display = 'none';
 
-        comment_form.style.display = 'block';
+        const new_comment_form = event.target.parentNode.querySelector('#comment-form');
+        const comment_text = new_comment_form.querySelector('#comment-text');
         comment_text.value = '';
 
-        make_comment.addEventListener('click', (event) => {
+        const comment_div = event.target.parentNode.parentNode.querySelector('#comments');
+
+        new_comment_form.style.display = 'block';
+        new_comment_form.querySelector('#comment-submit').addEventListener('click', (event) => {
             event.preventDefault();
             fetch('/comment', {
                 method: 'POST',
@@ -156,13 +157,40 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json())
             .then(result => {
-                console.log(result);
+                if (result['success'] == 'commented'){
+                    comment_div.innerHTML += `
+                    <div class="card">
+                        <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                                <p>${result['comment']}</p>
+                                <footer class="blockquote-footer">${result['user_comment']}</footer>
+                            </blockquote>
+                        </div>
+                   </div>`;
+                }
             });
         });
+
+
 
     }
 
 
     function show_comments(event){
+        event.preventDefault();
+
+        //Gives us the card fot the whole post
+        const post = event.target.parentNode.parentNode;
+        
+
+        const comments = post.querySelector('#comments');
+
+        comments.style.display = 'block';
+
+        const new_comment_div = post.querySelector('#new-comment');
+
+        new_comment_div.style.display = 'block';
+
+        new_comment_div.querySelector('#add-comment').addEventListener('click', comment);
 
     }
