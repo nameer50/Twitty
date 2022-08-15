@@ -167,9 +167,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             </blockquote>
                         </div>
                    </div>`;
+                   comment_text.value = '';
+                   new_comment_form.style.display = 'none';
                 }
             });
         });
+        
 
 
 
@@ -185,8 +188,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const comments = post.querySelector('#comments');
 
+        if (comments.style.display == 'none'){
         comments.style.display = 'block';
-
+       
+        }
+        else{
+            comments.style.display = 'none';
+            
+        }
         const new_comment_div = post.querySelector('#new-comment');
 
         new_comment_div.style.display = 'block';
