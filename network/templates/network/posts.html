@@ -12,14 +12,15 @@
 <div id="all-posts">
     {% for post in posts %}
     <div class="card">
+
         <div class="card-header">
           <a href="{% url 'profile' post.user_post %}">{{post.user_post}}</a>
           <br>
           {{post.time}}
         </div>
+
         <div class="card-body">
           <h5 class="card-title">{{post.post}}</h5>
-        
           {% if post.id in liked %}
           <button class="btn btn-primary" id="unlike" data-post="{{post.id}}">Unlike: {{post.likes}}</button>
           {% else %}
@@ -27,25 +28,38 @@
           {% endif %}          
           <button class="btn btn-primary" id="show-comments">Comments: {{post.how_many_comments}}</button>
           {% if user.username == post.user_post %}
-          <button class="btn btn-secondary" id="edit">Edit</button>
-          {% endif %}
+          <button class="btn btn-secondary" id="edit" data-post="{{post.id}}">Edit</button>
           <form class="mb-3" id="edit-form" style="display: none;">
             <textarea class="form-control" id="edit-text" rows="3"></textarea>
             <button class="btn btn-primary" id="edit-submit" data-post="{{post.id}}" type="submit">Save</button>
           </form>
+          {% endif %}
+        </div>
+      
+        <div id="comments" style="display: none;">
+        {% for comment in post.comments %}
+          <div class="card">
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+              <p>{{comment.comment}}</p>
+              <footer class="blockquote-footer">{{comment.user_comment}}</footer>
+              </blockquote>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+
+        <div id="new-comment" style="display: none;">
+          <button class="btn btn-primary" id="add-comment">Add a comment</button>
           <form class="mb-3" id="comment-form" style="display: none;">
             <textarea class="form-control" id="comment-text" rows="3"></textarea>
             <button class="btn btn-primary" id="comment-submit" data-post="{{post.id}}" type="submit">Comment</button>
           </form>
         </div>
-      </div>
+
+    </div>
     {% endfor %}
-  
 </div>
-
-
-
-
 {% endblock %}
 
 

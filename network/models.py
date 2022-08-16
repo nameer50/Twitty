@@ -17,6 +17,7 @@ class Post(models.Model):
     def serialize(self):
         likes = len(self.liked_on.all())
         comments = self.commented_on.all()
+        comments = [comment.serialize() for comment in comments]
         return {
             "id":self.id,
             "user_post":self.user_post.username,
@@ -29,10 +30,16 @@ class Post(models.Model):
 
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     comment = models.TextField(blank=False)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="commented_on", default="1")
     user_comment = models.ForeignKey(User, on_delete=models.CASCADE,related_name="user_comm", default="1")
+    
+    def serialize(self):
+        return {
+            'comment': self.comment,
+            'user_comment': self.user_comment.username
+        }
 
 
 class Like(models.Model):

@@ -67,23 +67,42 @@ document.addEventListener('DOMContentLoaded', function() {
             const card_header = document.createElement('div');
             const card_body = document.createElement('div');
             const edit_form = document.createElement('form');
+            const comments = document.createElement('div');
+            const new_comment = document.createElement('div');
 
             new_post.classList.add('card');
             card_header.classList.add('card-header');
             card_body.classList.add('card-body');
             edit_form.classList.add('mb-3');
             edit_form.setAttribute('id', 'edit-form');
+            comments.setAttribute('id', 'comments');
+            new_comment.setAttribute('id', 'new-comment');
 
 
             card_header.innerHTML = `<a href="profile/${post.user_post}">${post.user_post}</a><br>${post.time}`;
             card_body.innerHTML = `<h5 class='card-title'>${post.post}</h5>`;
-            card_body.innerHTML += `<button id='like' class='btn btn-primary' data-post=${post.id}>Like: 0</button> <button class='btn btn-primary'>Comment</button> <button class='btn btn-secondary' id='edit'>Edit</button>`;
+            card_body.innerHTML += `<button id='like' class='btn btn-primary' data-post=${post.id}>Like: 0</button> <button class='btn btn-primary' id="show-comments">Comments: 0</button> <button class='btn btn-secondary' id='edit'>Edit</button>`;
             edit_form.innerHTML = `<textarea class="form-control" id="edit-text" rows="3"></textarea> <button class="btn btn-primary" id="edit-submit" data-post="${post.id}" type="submit">Save</button>`;
-            
+            comments.innerHTML = `
+            <div class="card">
+          </div>`;
+          new_comment.innerHTML = `
+          <button class="btn btn-primary" id="add-comment">Add a comment</button>
+          <form class="mb-3" id="comment-form" style="display: none;">
+            <textarea class="form-control" id="comment-text" rows="3"></textarea>
+            <button class="btn btn-primary" id="comment-submit" data-post=${post.id} type="submit">Comment</button>
+          </form>`;
+
+
+
             edit_form.style.display = "none";
+            new_comment.style.display = "none";
+            comments.style.display = "none";
             new_post.append(card_header);
             card_body.append(edit_form);
             new_post.append(card_body);
+            new_post.append(comments);
+            new_post.append(new_comment);
 
             
 
@@ -95,6 +114,10 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('#edit').forEach(el => {
                 el.addEventListener('click', edit_post);
             });
+            document.querySelectorAll('#show-comments').forEach(el => {
+                el.addEventListener('click', show_comments);
+            });
+
         });
 
         //Clear out the post-text field

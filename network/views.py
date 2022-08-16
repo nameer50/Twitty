@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
-from .models import User,Post,Like,Comments,Profile
+from .models import User,Post,Like,Comment,Profile
 
 
 @login_required(login_url='login')
@@ -105,8 +105,6 @@ def posts(request):
         new_post = p.serialize()
         return JsonResponse({'success': new_post})
 
-
-
 @csrf_exempt
 def liked(request):
     if request.method == "POST":
@@ -191,7 +189,7 @@ def comment(request):
 
         post = Post.objects.get(pk=data['post'])
         user = User.objects.get(pk=request.user.id)
-        c = Comments(comment=comment, post=post, user_comment=user)
+        c = Comment(comment=comment, post=post, user_comment=user)
         c.save()
         post = post.serialize()
         return JsonResponse({'success':'commented', 'comment':c.comment, 'user_comment':c.user_comment.username, 'comments_amount':post['how_many_comments']})
