@@ -78,7 +78,7 @@ function comment(event){
     new_comment_form.querySelector('#comment-submit').addEventListener('click', (event) => {
         event.preventDefault();
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        
+
         fetch('/comment', {
             method: 'POST',
             body: JSON.stringify({
@@ -93,7 +93,7 @@ function comment(event){
 
             if (result['success'] == 'commented'){
                 comment_div.innerHTML += `
-                <div class="card">
+                <div class="card" id="comment">
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
                             <p>${result['comment']}</p>

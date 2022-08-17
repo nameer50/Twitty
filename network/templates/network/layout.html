@@ -9,7 +9,7 @@
         <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
         <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
         <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-        <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="{% static './network/styles.css' %}">
         {% block script %}
         {% endblock %}
     </head>
@@ -18,7 +18,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="{% url 'index' %}">Network</a>
           
-            <div>
+            <div id="nav-items">
               <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
@@ -30,11 +30,11 @@
                 </li>
                 {% if user.is_authenticated %}
                     
-                    <li class="nav-item">
+                    <li class="nav-item" id="signin-out">
                         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                     </li>
                 {% else %}
-                    <li class="nav-item">
+                    <li class="nav-item" id="signin-out">
                         <a class="nav-link" href="{% url 'login' %}">Log In</a>
                     </li>
                     <li class="nav-item">

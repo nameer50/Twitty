@@ -37,7 +37,7 @@ function liked_post(event){
 
     .then(response => response.json())
     .then(result => {
-        console.log(result);
+        
         const likes = result['likes']
 
         if (result['success'] == 'liked'){
@@ -115,6 +115,7 @@ function make_post(event){
             el.addEventListener('click', show_comments);
         });
     }
+
     });
     document.querySelector('#post-text').value = '';
 }
@@ -205,7 +206,7 @@ function comment(event){
 
             if (result['success'] == 'commented'){
                 comment_div.innerHTML += `
-                <div class="card">
+                <div class="card" id="comment">
                     <div class="card-body">
                         <blockquote class="blockquote mb-0">
                             <p>${result['comment']}</p>
@@ -220,7 +221,14 @@ function comment(event){
             else if (result['error'] == 'must be logged in'){
                 window.location.href = '/login';
             }
+            
         });
         comment_text.value = '';
+        
+    
+        
+        
+        
+
     });
 }

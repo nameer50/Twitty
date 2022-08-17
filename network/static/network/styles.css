@@ -1,6 +1,73 @@
-.card{
+#post-card{
+    display: flex;
     margin-top: 20px;
     margin-bottom: 20px;
+    width:60%;
+    border-radius: 20px;
+    
 }
 
+#all-posts{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+#post-form{
+    display: flex;
+    width: 70%;
+    flex:1;
+    margin: auto;
+    padding-top: 20px;
+
+}
+
+button{
+    border-radius: 10px;
+
+}
+
+#comment{
+    display: flex;
+    width: 50%;
+    border-radius: 10px;
+    margin-left: 20px;
+    margin-top: 20px;
+
+}
+
+#new-comment{
+    width: 50%;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+
+}
+
+#comment-submit{
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+#comment-form{
+    width:100%;
+    display: flex;
+}
+
+a{
+    all: unset;
+}
+a:hover{
+    text-decoration: underline;
+    color: blue;
+}
+
+nav{
+    display: flex;
+    padding: 1rem 1rem 1rem 1rem;
+}
+
+#nav-items{
+    flex: 1;
+}

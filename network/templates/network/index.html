@@ -4,14 +4,13 @@
 {% block body %}
 
 <form class="input-group mb-3" id="post-form">
-
   <button type="submit" class="btn btn-outline-secondary" type="button" id="share">Share</button>
   <input required type="text" class="form-control" placeholder="Whats on your mind?" id="post-text">
 </form>
 
 <div id="all-posts">
     {% for post in posts %}
-    <div class="card">
+    <div class="card" id="post-card">
         <div class="card-header">
           <a href="{% url 'profile' post.user_post %}">{{post.user_post}}</a>
           <br>
@@ -35,7 +34,7 @@
         </div>
         <div id="comments" style="display: none;">  
           {% for comment in post.comments %}
-            <div class="card">
+            <div class="card" id="comment">
               <div class="card-body">
                 <blockquote class="blockquote mb-0">
                 <p>{{comment.comment}}</p>
