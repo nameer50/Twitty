@@ -30,7 +30,6 @@
 {% endfor %}
 </div>
 
-
 {% if user.username == profile %}
 <form class="input-group mb-3" id="post-form">
     <button type="submit" class="btn btn-outline-secondary" type="button" id="share">Share</button>
@@ -94,6 +93,7 @@
 
 
 {% block script %}
+{% csrf_token %}
 {% if user.username != profile %}
 <script src="{% static 'network/profile.js' %}"></script>
 <script src="{% static 'network/profile_other_posts.js' %}"></script>

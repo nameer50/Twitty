@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('#like').forEach(el => {
@@ -14,58 +15,55 @@ document.addEventListener('DOMContentLoaded', function() {
     
 });
 
-  function liked_post(event){
+function liked_post(event){
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
     fetch('/liked', {
         method: 'POST',
         body: JSON.stringify({
             post : event.target.dataset.post,
             type : event.target.id
         }),
+        headers: {'X-CSRFToken': csrftoken}
     })
+
     .then(response => response.json())
     .then(result => {
-        console.log(result);
         const likes = result['likes']
+
         if (result['success'] == 'liked'){
-            
             event.target.innerHTML = `Unlike: ${likes}`;
             event.target.setAttribute('id', 'unlike');
         }
         else if (result['success'] == 'unliked'){
-            
             event.target.innerHTML = `Like: ${likes}`;
             event.target.setAttribute('id', 'like');
+        }
+        else if (result['error'] == 'need to login'){
+            window.location.href = '/login';
         }
     });
 }
 
 function show_comments(event){
     event.preventDefault();
-
-    //Gives us the card for the whole post
     const post = event.target.parentNode.parentNode;
-    
-
     const comments = post.querySelector('#comments');
     const new_comment_div = post.querySelector('#new-comment');
-
+    
     if (comments.style.display == 'none'){
-    comments.style.display = 'block';
-    new_comment_div.style.display = 'block';
-   
+        comments.style.display = 'block';
+        new_comment_div.style.display = 'block';
     }
     else{
         comments.style.display = 'none';
         new_comment_div.style.display = 'none';
-        
     }
     new_comment_div.querySelector('#add-comment').addEventListener('click', comment);
-
 }
 
 function comment(event){
     event.preventDefault();
-
     const add_comment_button = event.target;
     const new_comment_form = event.target.parentNode.querySelector('#comment-form');
     const comment_text = new_comment_form.querySelector('#comment-text');
@@ -73,22 +71,26 @@ function comment(event){
     const card_body = event.target.parentNode.parentNode.querySelector('.card-body');
     const comment_button = card_body.querySelector('#show-comments');
 
-
     add_comment_button.style.display = 'none';
     comment_text.value = '';
     new_comment_form.style.display = 'block';
 
     new_comment_form.querySelector('#comment-submit').addEventListener('click', (event) => {
         event.preventDefault();
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
         fetch('/comment', {
             method: 'POST',
             body: JSON.stringify({
                 post: event.target.dataset.post,
                 comment: comment_text.value
             }),
+            headers: {'X-CSRFToken': csrftoken}  
         })
+
         .then(response => response.json())
         .then(result => {
+
             if (result['success'] == 'commented'){
                 comment_div.innerHTML += `
                 <div class="card">
@@ -103,8 +105,10 @@ function comment(event){
                new_comment_form.style.display = 'none';
                add_comment_button.style.display = 'block';
             }
+            else if (result['error'] == 'must be logged in'){
+                    window.location.href = '/login';
+                }
+            });
+            comment_text.value = '';  
         });
-        comment_text.value = '';
-        
-    });
 }

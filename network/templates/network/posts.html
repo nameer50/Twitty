@@ -65,5 +65,6 @@
 
 
 {% block script %}
+{% csrf_token %}
     <script src="{% static 'network/posts.js' %}"></script>
 {% endblock %}
