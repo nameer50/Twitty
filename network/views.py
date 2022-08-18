@@ -167,7 +167,9 @@ def profile(request, username):
             'followers':followers,
              'profile':username, 
              'posts':posts, 
-             'liked':liked
+             'liked':liked,
+             'followers_howmany':len(followers),
+             'following_howmany': len(following)
              })
 
 def follow(request):
@@ -184,14 +186,16 @@ def follow(request):
             user_toggled_on_profile.followers.add(user)
             return JsonResponse({
                 'success':'followed', 
-                'user':user.username})
+                'user':user.username,
+                'updated_count': len(user_toggled_on_profile.followers.all())})
 
         if type == 'unfollow':
             user_profile.following.remove(user_toggled_on)
             user_toggled_on_profile.followers.remove(user)
             return JsonResponse({
                 'success': 'unfollowed',
-                 'user':user.username})
+                 'user':user.username,
+                 'updated_count': len(user_toggled_on_profile.followers.all())})
     else:
         return JsonResponse({'error':'must be logged in'})
 

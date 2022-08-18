@@ -1,29 +1,105 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
-    <a class="navbar-brand" href="{% url 'index' %}">Network</a>
-  
-    <div id="nav-items">
-      <ul class="navbar-nav mr-auto" id="top-nav">
-        {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a class="nav-link" id="profile" href="{% url 'profile' user.username %}"><strong>{{ user.username }}</strong></a>
-            </li>
-        {% endif %}
-        <li class="nav-item">
-          <a class="nav-link" id="all-posts-link" href="{% url 'posts' %}">All Posts</a>
-        </li>
-        {% if user.is_authenticated %}
-            
-            <li class="nav-item" id="signin-out">
-                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-            </li>
-        {% else %}
-            <li class="nav-item" id="signin-out">
-                <a class="nav-link" href="{% url 'login' %}">Log In</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'register' %}">Register</a>
-            </li>
-        {% endif %}
-      </ul>
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+
+<div id="profile" class="card">
+{% if user.username == profile %}
+<h1>This is your profile</h1>
+{% else %}
+<h1>{{profile}}'s profile</h1>
+{% endif %}
+
+{% if user in followers %}
+<button class="btn btn-primary" id="follow" data-type="unfollow" data-user="{{profile}}">Unfollow</button>
+{% elif user.username != profile  %}
+<button class="btn btn-primary" id="follow" data-type="follow" data-user="{{profile}}">Follow</button>
+{% endif %}
+
+<div id="following" class="dropdown">
+<h1> Following </h1>
+{% for user in following %}
+<a href="{% url 'profile' user %}" id="{{user}}">{{user}}</a>
+{% endfor %}
+</div>
+
+<div id ="followers">
+<h1> Followers </h1>
+{% for user in followers %}
+<a href="{% url 'profile' user %}" id="{{user}}">{{user}}</a>
+{% endfor %}
+</div>
+</div>
+
+{% if user.username == profile %}
+<form class="input-group mb-3" id="post-form">
+    <button type="submit" class="btn btn-outline-secondary" type="button" id="share">Share</button>
+    <input required type="text" class="form-control" placeholder="Whats on your mind?" id="post-text">
+  </form>
+{% endif %}
+
+<div id="all-posts">
+    {% for post in posts %}
+    <div class="card" id="post-card">
+
+        <div class="card-header">
+          <a href="{% url 'profile' post.user_post %}">{{post.user_post}}</a>
+          <br>
+          {{post.time}}
+        </div>
+        
+        <div class="card-body">
+          <h5 class="card-title">{{post.post}}</h5>
+          {% if post.id in liked %}
+          <button class="btn btn-primary" id="unlike" data-post="{{post.id}}">Unlike: {{post.likes}}</button>
+          {% else %}
+          <button class="btn btn-primary" id="like" data-post="{{post.id}}">Like: {{post.likes}}</button>
+          {% endif %}          
+          <button class="btn btn-primary" id="show-comments">Comments: {{post.how_many_comments}}</button>
+          {% if user.username == profile %}
+          <button class="btn btn-secondary" id="edit" data-post="{{post.id}}">Edit</button>
+          <form class="mb-3" id="edit-form" style="display: none;">
+            <textarea class="form-control" id="edit-text" rows="3"></textarea>
+            <button class="btn btn-primary" id="edit-submit" data-post="{{post.id}}" type="submit">Save</button>
+          </form>
+          {% endif %}
+        </div>
+      
+        <div id="comments" style="display: none;">
+        {% for comment in post.comments %}
+          <div class="card" id="comment">
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+              <p>{{comment.comment}}</p>
+              <footer class="blockquote-footer">{{comment.user_comment}}</footer>
+              </blockquote>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+
+        <div id="new-comment" style="display: none;">
+          <button class="btn btn-primary" id="add-comment">Add a comment</button>
+          <form class="mb-3" id="comment-form" style="display: none;">
+            <textarea class="form-control" id="comment-text" rows="3"></textarea>
+            <button class="btn btn-primary" id="comment-submit" data-post="{{post.id}}" type="submit">Comment</button>
+          </form>
+        </div>
+
     </div>
-  </nav>
+    {% endfor %}
+</div>
+{% endblock %}
+
+
+
+{% block script %}
+{% csrf_token %}
+{% if user.username != profile %}
+<script src="{% static 'network/profile.js' %}"></script>
+<script src="{% static 'network/profile_other_posts.js' %}"></script>
+{% else %}
+<script src="{% static 'network/posts.js' %}"></script>
+{% endif %}
+{% endblock %}

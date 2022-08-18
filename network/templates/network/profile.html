@@ -4,6 +4,7 @@
 {% block body %}
 
 
+<div id="profile" class="card">
 {% if user.username == profile %}
 <h1>This is your profile</h1>
 {% else %}
@@ -16,18 +17,32 @@
 <button class="btn btn-primary" id="follow" data-type="follow" data-user="{{profile}}">Follow</button>
 {% endif %}
 
-<div id="following">
-<h1> Following </h1>
-{% for user in following %}
-<a href="{% url 'profile' user %}" id="{{user}}">{{user}}</a>
-{% endfor %}
+<div id="follow-buttons">
+<div id ="followers" class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="follow-toggle">
+    Followers: {{followers_howmany}}
+  </button>
+  <ul class="dropdown-menu" id="followers-dropdown">
+    {% for user in followers %}
+    <li><a class="dropdown-item" href="{% url 'profile' user %}" id="{{user}}">{{user}}</a></li>
+    {% endfor %}
+  </ul>
 </div>
 
-<div id ="followers">
-<h1> Followers </h1>
-{% for user in followers %}
-<a href="{% url 'profile' user %}" id="{{user}}">{{user}}</a>
-{% endfor %}
+<div id="following" class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Following: {{following_howmany}}
+  </button>
+  <ul class="dropdown-menu" id="following-dropdown">
+    {% for user in following %}
+    <li><a class="dropdown-item" href="{% url 'profile' user %}" id="{{user}}">{{user}}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+</div>
+
+
+
 </div>
 
 {% if user.username == profile %}
