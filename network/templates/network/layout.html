@@ -15,11 +15,11 @@
     </head>
     <body>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
             <a class="navbar-brand" href="{% url 'index' %}">Network</a>
           
             <div id="nav-items">
-              <ul class="navbar-nav mr-auto">
+              <ul class="navbar-nav mr-auto" id="top-nav">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" id="profile" href="{% url 'profile' user.username %}"><strong>{{ user.username }}</strong></a>

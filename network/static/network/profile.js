@@ -32,7 +32,8 @@ function follow(event){
     else if (result['success'] == 'unfollowed'){
       event.target.innerText = 'Follow';
       event.target.dataset.type = 'follow';
-      const user = document.querySelector(`#${result['user']}`);
+      const followers = document.querySelector('#followers');
+      const user = followers.querySelector(`#${result['user']}`);
       user.parentElement.removeChild(user);
     }
     else if (result['error'] == 'must be logged in'){

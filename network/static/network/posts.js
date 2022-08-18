@@ -74,6 +74,7 @@ function make_post(event){
         const post = result['new_post'];
         const new_post = document.createElement('div');
         new_post.classList.add('card');
+        new_post.setAttribute('id', 'post-card')
         
         new_post.innerHTML = `
         <div class="card-header">
