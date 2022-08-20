@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('#show-comments').forEach(el => {
         el.addEventListener('click', show_comments);
     });
-
   });
 
 function liked_post(event){
@@ -226,10 +225,6 @@ function comment(event){
         });
         comment_text.value = '';
         
-    
-        
-        
-        
-
     });
 }
+

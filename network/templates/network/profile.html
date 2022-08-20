@@ -6,7 +6,8 @@
 
 <div id="profile" class="card">
 {% if user.username == profile %}
-<h1>This is your profile</h1>
+<h1>{{profile}}'s profile</h1>
+<h5>This is your profile</h5>
 {% else %}
 <h1>{{profile}}'s profile</h1>
 {% endif %}

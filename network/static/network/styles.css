@@ -61,6 +61,11 @@ a:hover{
 #navbar{
     display: flex;
     padding: 1rem 1rem 1rem 1rem;
+    background-color: rgb(106, 170, 243);
+}
+
+.nav-link, .navbar-brand{
+    font-weight:bold ;
 }
 
 #profile{
@@ -93,4 +98,13 @@ a:hover{
     margin-top:10px;
 }
 
+#edit{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.btn-primary{
+    background-color: rgb(81, 157, 244);
+}
 
