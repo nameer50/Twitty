@@ -87,6 +87,9 @@ def posts(request):
         posts = Post.objects.all()
         posts = posts.order_by("-timestamp").all()
         posts = [post.serialize() for post in posts]
+        profile = Profile.objects.get(user_profile = request.user)
+        following = [user.username for user in profile.following.all()]
+        
 
         try:
             liked = Like.objects.filter(user_like=request.user)
@@ -97,7 +100,8 @@ def posts(request):
 
         return render(request, 'network/posts.html',{
             'posts':posts, 
-            'liked':liked
+            'liked':liked,
+            'following':following
             })
 
     if request.method == "POST":
