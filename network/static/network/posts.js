@@ -116,6 +116,10 @@ function make_post(event){
         });
     }
 
+    else if (result['error'] == 'need to login'){
+        window.location.href = '/login';
+    }
+
     });
     document.querySelector('#post-text').value = '';
 }

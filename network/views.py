@@ -87,16 +87,16 @@ def posts(request):
         posts = Post.objects.all()
         posts = posts.order_by("-timestamp").all()
         posts = [post.serialize() for post in posts]
-        profile = Profile.objects.get(user_profile = request.user)
-        following = [user.username for user in profile.following.all()]
         
-
         try:
             liked = Like.objects.filter(user_like=request.user)
             liked = [like.post.id for like in liked]
+            profile = Profile.objects.get(user_profile = request.user)
+            following = [user.username for user in profile.following.all()]
 
-        except (Like.DoesNotExist,TypeError):
+        except (Like.DoesNotExist,Profile.DoesNotExist,TypeError):
             liked = None
+            following = None
 
         return render(request, 'network/posts.html',{
             'posts':posts, 
@@ -104,7 +104,7 @@ def posts(request):
             'following':following
             })
 
-    if request.method == "POST":
+    if request.user.is_authenticated and request.method == "POST":
         data = json.loads(request.body)
         user_post = request.user
         post = data['post']
@@ -117,6 +117,8 @@ def posts(request):
             'success': 'posted', 
             'new_post':new_post
             })
+    else:
+        return JsonResponse({'error':'need to login'})
 
 def liked(request):
     if request.user.is_authenticated and request.method == "POST":
