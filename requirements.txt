@@ -1,3 +1,4 @@
 dj_database_url==1.0.0
 Django==4.0.6
 django_on_heroku==1.1.2
+gunicorn
